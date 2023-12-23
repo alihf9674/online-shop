@@ -1,7 +1,7 @@
 <aside id="sidebar" class="sidebar">
     <section class="sidebar-container">
         <section class="sidebar-wrapper">
-            <a href="#" class="sidebar-link">
+            <a href="{{route('admin.home')}}" class="sidebar-link">
                 <i class="fas fa-home"></i>
                 <span>خانه</span>
             </a>
@@ -13,7 +13,7 @@
                     <i class="fas fa-angle-left angle"></i>
                 </section>
                 <section class="sidebar-dropdown">
-                    <a href="#">دسته بندی</a>
+                    <a href="{{route('admin.market.category.index')}}">دسته بندی</a>
                     <a href="#">فرم کالا</a>
                     <a href="#">برندها</a>
                     <a href="#">کالاها</a>

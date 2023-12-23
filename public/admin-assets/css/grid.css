@@ -255,7 +255,7 @@ button {
 }
 
 .sidebar-dropdown a::before,
-button::before {
+.sidebar-dropdown button::before {
     content: "»";
     margin: 0.8rem;
 }
