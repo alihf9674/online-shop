@@ -54,7 +54,7 @@ class CategoryController extends Controller
         }
         $inputs['image'] = $saveImageResult;
         PostCategory::create($inputs);
-        return redirect()->route('admin.content.category.index')->with('swal-success', 'دسته بندی شما با موفقیت ثبت شد');
+        return redirect()->route('admin.content.category.index')->with('swal-success', 'دسته بندی جدید با موفقیت ثبت شد');
     }
 
     /**
@@ -108,7 +108,7 @@ class CategoryController extends Controller
             }
         }
         $postCategory->update($inputs);
-        return redirect()->route('admin.content.category.index')->with('swal-success', 'دسته بندی شما با موفقیت ویرایش شد');;
+        return redirect()->route('admin.content.category.index')->with('swal-success', 'دسته بندی شما با موفقیت ویرایش شد');
     }
 
     /**
@@ -125,7 +125,6 @@ class CategoryController extends Controller
 
     /**
      * change category status.
-     *
      * @param PostCategory $postCategory
      * @return \Illuminate\Http\JsonResponse
      */
@@ -136,8 +135,7 @@ class CategoryController extends Controller
         if ($result) {
             if ($postCategory->status === 0) return response()->json(['status' => true, 'checked' => false]);
             else return response()->json(['status' => true, 'checked' => true]);
-        } else {
-            return response()->json(['status' => false]);
         }
+        return response()->json(['status' => false]);
     }
 }

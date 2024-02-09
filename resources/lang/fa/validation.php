@@ -134,7 +134,7 @@ return [
         "hour"                      => "ساعت",
         "minute"                    => "دقیقه",
         "second"                    => "ثانیه",
-        "title"                     => "عنوان کالا",
+        "title"                     => "عنوان",
         "text"                      => "متن",
         "content"                   => "محتوا",
         "description"               => "توضیحات",
@@ -157,6 +157,7 @@ return [
         "priority_id"               => "اولویت",
         "category_id"               => "دسته بندی",
         "tags"                      => "برچسب ها",
-        "status"                    => "وضعیت"
+        "status"                    => "وضعیت",
+        "summary"                   => "خلاصه"
     ],
 ];
