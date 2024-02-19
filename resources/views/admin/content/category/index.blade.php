@@ -38,6 +38,7 @@
                             <th>اسلاگ</th>
                             <th>عکس</th>
                             <th>تگ ها</th>
+                            <th>وضعیت</th>
                             <th class="max-width-16-rem text-center"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                         </thead>
@@ -54,6 +55,7 @@
                                         src="{{asset($postCategory->image['indexArray'][$postCategory->image['currentImage']])}}"
                                         alt="image" width="100" height="50">
                                 </td>
+                                <td>{{$postCategory->tags}}</td>
                                 <td>
                                     <label>
                                         <input id="{{$postCategory->id}}" onchange="changeStatus({{$postCategory->id}})"

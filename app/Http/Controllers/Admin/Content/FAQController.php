@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\Content;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Content\FaqRequest;
 use App\Models\Content\Faq;
-use Illuminate\Http\Request;
 
 class FAQController extends Controller
 {
@@ -23,7 +22,7 @@ class FAQController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function create()
     {
