@@ -27,4 +27,9 @@ class Post extends Model
     {
         return $this->belongsTo(PostCategory::class, 'category_id');
     }
+
+    public function comments(): \Illuminate\Database\Eloquent\Relations\MorphToMany
+    {
+        return $this->morphToMany('App\Models\Content\Comment', 'commentable');
+    }
 }
