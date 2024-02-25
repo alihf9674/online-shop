@@ -1,15 +1,16 @@
 @extends('admin.layouts.master')
 
 @section('head-tag')
+    <link rel="stylesheet" href="{{ asset('admin-assets/jalalidatepicker/persian-datepicker.min.css') }}">
     <title>ایجاد اطلاعیه پیامکی</title>
 @endsection
 
 @section('content')
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item font-size-12"> <a href="#">خانه</a></li>
-            <li class="breadcrumb-item font-size-12"> <a href="#">اطلاع رسانی</a></li>
-            <li class="breadcrumb-item font-size-12"> <a href="#">اطلاعیه پیامکی</a></li>
+            <li class="breadcrumb-item font-size-12"><a href="#">خانه</a></li>
+            <li class="breadcrumb-item font-size-12"><a href="#">اطلاع رسانی</a></li>
+            <li class="breadcrumb-item font-size-12"><a href="#">اطلاعیه پیامکی</a></li>
             <li class="breadcrumb-item font-size-12 active" aria-current="page"> ایجاد اطلاعیه پیامکی</li>
         </ol>
     </nav>
@@ -28,27 +29,69 @@
                 </section>
 
                 <section>
-                    <form action="" method="">
+                    <form action="{{ route('admin.notify.sms.store') }}" method="post">
+                        @csrf
                         <section class="row">
-
                             <section class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="">عنوان پیامک</label>
-                                    <input type="text" class="form-control form-control-sm">
+                                    <input type="text" name="title" value="{{ old('title') }}"
+                                           class="form-control form-control-sm">
+                                    @error('title')
+                                    <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                <strong>
+                                    {{ $message }}
+                                </strong>
+                            </span>
+                                    @enderror
                                 </div>
                             </section>
 
                             <section class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label for=""> تاریخ انتشار</label>
-                                    <input type="text" class="form-control form-control-sm">
+                                    <label for="">تاریخ انتشار</label>
+                                    <input type="text" name="published_at" class="form-control form-control-sm d-none"
+                                           id="published_at">
+                                    <input type="text" class="form-control form-control-sm" id="published_at_view">
                                 </div>
+                                @error('published_at')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                <strong>
+                                    {{ $message }}
+                                </strong>
+                            </span>
+                                @enderror
+                            </section>
+
+                            <section class="col-12">
+                                <div class="form-group">
+                                    <label for="status">وضعیت</label>
+                                    <select name="status" id="" class="form-control form-control-sm" id="status">
+                                        <option value="0" @if(old('status') == 0) selected @endif>غیرفعال</option>
+                                        <option value="1" @if(old('status') == 1) selected @endif>فعال</option>
+                                    </select>
+                                </div>
+                                @error('status')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                <strong>
+                                    {{ $message }}
+                                </strong>
+                            </span>
+                                @enderror
                             </section>
 
                             <section class="col-12">
                                 <div class="form-group">
                                     <label for="">متن پیامک</label>
-                                    <textarea name="body" id="body"  class="form-control form-control-sm" rows="6"></textarea>
+                                    <textarea name="body" id="body" class="form-control form-control-sm"
+                                              rows="6">{{ old('body') }}</textarea>
+                                    @error('body')
+                                    <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                <strong>
+                                    {{ $message }}
+                                </strong>
+                            </span>
+                                    @enderror
                                 </div>
                             </section>
 
@@ -61,4 +104,26 @@
             </section>
         </section>
     </section>
+@endsection
+
+@section('script')
+
+    <script src="{{ asset('admin-assets/jalalidatepicker/persian-date.min.js') }}"></script>
+    <script src="{{ asset('admin-assets/jalalidatepicker/persian-datepicker.min.js') }}"></script>
+
+
+    <script>
+        $(document).ready(() => {
+            $('#published_at_view').persianDatepicker({
+                format: 'YYYY/MM/DD',
+                altField: '#published_at',
+                timePicker: {
+                    enabled: true,
+                    meridiem: {
+                        enabled: true
+                    }
+                }
+            });
+        });
+    </script>
 @endsection
