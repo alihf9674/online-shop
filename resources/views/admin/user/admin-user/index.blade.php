@@ -7,8 +7,8 @@
 @section('content')
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item font-size-12"> <a href="#">خانه</a></li>
-            <li class="breadcrumb-item font-size-12"> <a href="#">بخش کاربران</a></li>
+            <li class="breadcrumb-item font-size-12"><a href="#">خانه</a></li>
+            <li class="breadcrumb-item font-size-12"><a href="#">بخش کاربران</a></li>
             <li class="breadcrumb-item font-size-12 active" aria-current="page"> کاربران ادمین</li>
         </ol>
     </nav>
@@ -21,9 +21,9 @@
                         کاربران ادمین
                     </h5>
                 </section>
-
                 <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
-                    <a href="{{ route('admin.user.admin-user.create') }}" class="btn btn-info btn-sm">ایجاد ادمین جدید</a>
+                    <a href="{{ route('admin.user.admin-user.create') }}" class="btn btn-info btn-sm">ایجاد ادمین
+                        جدید</a>
                     <div class="max-width-16-rem">
                         <input type="text" class="form-control form-control-sm form-text" placeholder="جستجو">
                     </div>
@@ -38,54 +38,187 @@
                             <th>شماره موبایل</th>
                             <th>نام</th>
                             <th>نام خانوادگی</th>
+                            <th>فعال سازی</th>
+                            <th>وضعیت</th>
                             <th>نقش</th>
                             <th class="max-width-16-rem text-center"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <th>1</th>
-                            <td>kamran@gmail.com		</td>
-                            <td>09127468392	</td>
-                            <td>کامران	</td>
-                            <td>محمدی	</td>
-                            <td>سوپر ادمین	</td>
-                            <td class="width-22-rem text-left">
-                                <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> نقش</a>
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>1</th>
-                            <td>kamran@gmail.com		</td>
-                            <td>09127468392	</td>
-                            <td>کامران	</td>
-                            <td>محمدی	</td>
-                            <td>سوپر ادمین	</td>
-                            <td class="width-22-rem text-left">
-                                <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> نقش</a>
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>1</th>
-                            <td>kamran@gmail.com		</td>
-                            <td>09127468392	</td>
-                            <td>کامران	</td>
-                            <td>محمدی	</td>
-                            <td>سوپر ادمین	</td>
-                            <td class="width-22-rem text-left">
-                                <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> نقش</a>
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
-                            </td>
-                        </tr>
+                        @foreach ($admins as $key => $admin)
+                            <tr>
+                                <th>{{ $key + 1 }}</th>
+                                <td>{{ $admin->email }}</td>
+                                <td>{{ $admin->mobile }}</td>
+                                <td>{{ $admin->first_name }}</td>
+                                <td>{{ $admin->last_name }}</td>
+                                <td>
+                                    <label>
+                                        <input id="{{ $admin->id }}-active" onchange="changeActive({{ $admin->id }})"
+                                               data-url="{{ route('admin.user.admin-user.activation', $admin->id) }}"
+                                               type="checkbox" @if ($admin->activation === 1)
+                                               checked
+                                            @endif>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label>
+                                        <input id="{{ $admin->id }}" onchange="changeStatus({{ $admin->id }})"
+                                               data-url="{{ route('admin.user.admin-user.status', $admin->id) }}"
+                                               type="checkbox" @if ($admin->status === 1)
+                                               checked
+                                            @endif>
+                                    </label>
+                                </td>
+                                <td>سوپر ادمین</td>
+                                <td class="width-22-rem text-left">
+                                    <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> نقش</a>
+                                    <a href="{{ route('admin.user.admin-user.edit'), $admin->id }}"
+                                       class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
+                                    <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i>
+                                        حذف
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
+
                         </tbody>
                     </table>
                 </section>
             </section>
         </section>
     </section>
+@endsection
+
+@section('script')
+
+    <script type="text/javascript">
+        const changeStatus = (id) => {
+            let element = $("#" + id);
+            let url = element.attr('data-url');
+            let elementValue = !element.prop('checked');
+
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (response) {
+                    if (response.status) {
+                        if (response.checked) {
+                            element.prop('checked', true);
+                            successToast('ادمین  با موفقیت فعال شد');
+                        } else {
+                            element.prop('checked', false);
+                            successToast('ادمین با موفقیت غیر فعال شد');
+                        }
+                    } else {
+                        element.prop('checked', elementValue);
+                        errorToast('هنگام ویرایش مشکلی بوجود امده است');
+                    }
+                },
+                error: function () {
+                    element.prop('checked', elementValue);
+                    errorToast('ارتباط برقرار نشد');
+                }
+            });
+
+            const successToast = (message) => {
+
+                let successToastTag = '<section class="toast" data-delay="5000">\n' +
+                    '<section class="toast-body py-3 d-flex bg-success text-white">\n' +
+                    '<strong class="ml-auto">' + message + '</strong>\n' +
+                    '<button type="button" class="mr-2 close" data-dismiss="toast" aria-label="Close">\n' +
+                    '<span aria-hidden="true">&times;</span>\n' +
+                    '</button>\n' +
+                    '</section>\n' +
+                    '</section>';
+
+                $('.toast-wrapper').append(successToastTag);
+                $('.toast').toast('show').delay(5500).queue(function () {
+                    $(this).remove();
+                })
+            }
+
+            const errorToast = (message) => {
+
+                let errorToastTag = '<section class="toast" data-delay="5000">\n' +
+                    '<section class="toast-body py-3 d-flex bg-danger text-white">\n' +
+                    '<strong class="ml-auto">' + message + '</strong>\n' +
+                    '<button type="button" class="mr-2 close" data-dismiss="toast" aria-label="Close">\n' +
+                    '<span aria-hidden="true">&times;</span>\n' +
+                    '</button>\n' +
+                    '</section>\n' +
+                    '</section>';
+
+                $('.toast-wrapper').append(errorToastTag);
+                $('.toast').toast('show').delay(5500).queue(function () {
+                    $(this).remove();
+                })
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        const changeActive = (id) => {
+            let element = $("#" + id + '-active');
+            let url = element.attr('data-url');
+            let elementValue = !element.prop('checked');
+
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (response) {
+                    if (response.status) {
+                        if (response.checked) {
+                            element.prop('checked', true);
+                            successToast('فعال سازی ادمین با موفقیت انجام شد');
+                        } else {
+                            element.prop('checked', false);
+                            successToast('غیر فعال سازی ادمین با موفقیت انجام شد');
+                        }
+                    } else {
+                        element.prop('checked', elementValue);
+                        errorToast('هنگام ویرایش مشکلی بوجود امده است');
+                    }
+                },
+                error: function () {
+                    element.prop('checked', elementValue);
+                    errorToast('ارتباط برقرار نشد');
+                }
+            });
+
+            const successToast = (message) => {
+                let successToastTag = '<section class="toast" data-delay="5000">\n' +
+                    '<section class="toast-body py-3 d-flex bg-success text-white">\n' +
+                    '<strong class="ml-auto">' + message + '</strong>\n' +
+                    '<button type="button" class="mr-2 close" data-dismiss="toast" aria-label="Close">\n' +
+                    '<span aria-hidden="true">&times;</span>\n' +
+                    '</button>\n' +
+                    '</section>\n' +
+                    '</section>';
+
+                $('.toast-wrapper').append(successToastTag);
+                $('.toast').toast('show').delay(5500).queue(() => {
+                    $(this).remove();
+                })
+            }
+
+            const errorToast = (message) => {
+                let errorToastTag = '<section class="toast" data-delay="5000">\n' +
+                    '<section class="toast-body py-3 d-flex bg-danger text-white">\n' +
+                    '<strong class="ml-auto">' + message + '</strong>\n' +
+                    '<button type="button" class="mr-2 close" data-dismiss="toast" aria-label="Close">\n' +
+                    '<span aria-hidden="true">&times;</span>\n' +
+                    '</button>\n' +
+                    '</section>\n' +
+                    '</section>';
+
+                $('.toast-wrapper').append(errorToastTag);
+                $('.toast').toast('show').delay(5500).queue(() => {
+                    $(this).remove();
+                })
+            }
+        }
+    </script>
+    @include('admin.alerts.sweetalert.delete-confirm', ['className' => 'delete'])
+
 @endsection
