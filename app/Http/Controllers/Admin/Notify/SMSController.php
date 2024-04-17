@@ -18,7 +18,6 @@ class SMSController extends Controller
     {
         $sms = SMS::orderBy('created_at', 'desc')->simplePaginate();
         return view('admin.notify.sms.index', compact('sms'));
-
     }
 
     /**
@@ -41,20 +40,9 @@ class SMSController extends Controller
     {
         $inputs = $request->all();
         $realTimeStamp = substr($request->published_at, 0, 10);
-        $inputs['published_at'] = date('Y-m-d H:i:s', (int)$realTimeStamp);
+        $inputs['published_at'] = date("Y-m-d H:i:s", (int)$realTimeStamp);
         SMS::create($inputs);
         return redirect()->route('admin.notify.sms.index')->with('swal-success', 'پیامک جدید با موفقیت ثبت شد');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -98,10 +86,11 @@ class SMSController extends Controller
 
     /**
      * change sms status.
+     *
      * @param Sms $sms
      * @return \Illuminate\Http\JsonResponse
      */
-    public function status(Sms $sms): \Illuminate\Http\JsonResponse
+    public function status(Sms $sms)
     {
         $sms->status = $sms->status === 0 ? 1 : 0;
         $result = $sms->save();

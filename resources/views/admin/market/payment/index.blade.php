@@ -21,12 +21,14 @@
                         پرداخت ها
                     </h5>
                 </section>
+
                 <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
                     <a href="#" class="btn btn-info btn-sm disabled">پرداخت جدید</a>
                     <div class="max-width-16-rem">
                         <input type="text" class="form-control form-control-sm form-text" placeholder="جستجو">
                     </div>
                 </section>
+
                 <section class="table-responsive">
                     <table class="table table-striped table-hover">
                         <thead>
@@ -41,32 +43,22 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <th>1</th>
-                            <td>32248324</td>
-                            <td>ملت</td>
-                            <td>حسن خسروجردی</td>
-                            <td>تایید شده</td>
-                            <td>آنلاین</td>
-                            <td class="width-22-rem text-left">
-                                <a href="#" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> مشاهده</a>
-                                <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-close"></i> باطل کردن</a>
-                                <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-reply"></i> برگرداندن</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>2</th>
-                            <td>32248324</td>
-                            <td>ملت</td>
-                            <td>حسن خسروجردی</td>
-                            <td>تایید شده</td>
-                            <td>آفلاین</td>
-                            <td class="width-22-rem text-left">
-                                <a href="#" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> مشاهده</a>
-                                <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-close"></i> باطل کردن</a>
-                                <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-reply"></i> برگرداندن</a>
-                            </td>
-                        </tr>
+
+                        @foreach ($payments as $payment)
+                            <tr>
+                                <th>{{ $loop->iteration }}</th>
+                                <td>{{ $payment->paymentable->transaction_id ?? '-' }}</td>
+                                <td>{{ $payment->paymentable->gateway ?? '-' }}</td>
+                                <td>{{ $payment->user->fullname }}</td>
+                                <td>@if($payment->status == 0) پرداخت نشده  @elseif ($payment->status == 1) پرداخت شده @elseif ($payment->status == 2) باطل شده @else برگشت داده شده @endif</td>
+                                <td> @if($payment->type == 0) آنلاین  @elseif ($payment->type == 1) آفلاین @else در محل @endif  </td>
+                                <td class="width-22-rem text-left">
+                                    <a href="{{ route('admin.market.payment.show') }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> مشاهده</a>
+                                    <a href="{{ route('admin.market.payment.canceled', $payment->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-close"></i> باطل کردن</a>
+                                    <a href="{{ route('admin.market.payment.returned', $payment->id) }}" class="btn btn-danger btn-sm"><i class="fa fa-reply"></i> برگرداندن</a>
+                                </td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </section>

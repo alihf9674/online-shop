@@ -2,7 +2,7 @@
 
 use Morilog\Jalali\Jalalian;
 
-function jalaliDate(int $date, string $format = '%A %d %B %Y'): string
+function jalaliDate(string $date, string $format = '%A %d %B %Y'): string
 {
     return Jalalian::forge($date)->format($format);
 }

@@ -165,6 +165,26 @@ return [
         "parent_id"                 => "دسته بندی",
         "logo"                      => "لوگو",
         "icon"                      => "آیکن",
-        "keywords"                  => "کلمات کلیدی"
-    ],
+        "keywords"                  => "کلمات کلیدی",
+        "amount"                    => "هزینه",
+        "delivery_time"             => "زمان ارسال",
+        "brand_id"                  => "نام برند",
+        "weight"                    => "وزن",
+        "length"                    => "طول",
+        "height"                    => "ارتفاع",
+        "width"                     => "عرض",
+        "price"                     => "قیمت",
+        "introduction"              => "توصیحات",
+        "delivery_time_unit"        => "واحد زمان ارسال",
+        "unit"                      => "واحد اندازه گیری",
+        "receiver"                  => "تحویل گیرنده",
+        "deliverer"                 => "تحویل دهنده",
+        "percentage"                => "درصد",
+        "discount_ceiling"          => "سقف تخفیف",
+        "minimal_order_amount"      => "حداقل مبلغ",
+        "product_id"                => "کالا",
+        "user_id"                   => "کاربر",
+        "code"                      => "کد تخفیف",
+        "type"                      => "نوع کوپن"
+    ]
 ];

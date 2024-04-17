@@ -22,35 +22,68 @@
                         اضافه کردن به انبار
                     </h5>
                 </section>
+
                 <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
                     <a href="{{ route('admin.market.store.index') }}" class="btn btn-info btn-sm">بازگشت</a>
                 </section>
+
                 <section>
-                    <form action="" method="">
+                    <form action="{{ route('admin.market.store.store', $product->id) }}" method="POST">
+                        @csrf
                         <section class="row">
+
                             <section class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="">نام تحویل گیرنده</label>
-                                    <input type="text" class="form-control form-control-sm">
+                                    <input type="text" name="receiver" value="{{ old('receiver') }}" class="form-control form-control-sm">
                                 </div>
+                                @error('receiver')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                <strong>
+                                    {{ $message }}
+                                </strong>
+                            </span>
+                                @enderror
                             </section>
                             <section class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="">نام تحویل دهنده</label>
-                                    <input type="text" class="form-control form-control-sm">
+                                    <input type="text" name="deliverer" value="{{ old('deliverer') }}" class="form-control form-control-sm">
                                 </div>
+                                @error('deliverer')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                <strong>
+                                    {{ $message }}
+                                </strong>
+                            </span>
+                                @enderror
                             </section>
                             <section class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="">تعداد</label>
-                                    <input type="text" class="form-control form-control-sm">
+                                    <input type="text" name="marketable_number" value="{{ old('marketable_number') }}" class="form-control form-control-sm">
                                 </div>
+                                @error('marketable_number')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                <strong>
+                                    {{ $message }}
+                                </strong>
+                            </span>
+                                @enderror
                             </section>
+
                             <section class="col-12">
                                 <div class="form-group">
                                     <label for="">توضیحات</label>
-                                    <textarea name="" rows="4" class="form-control form-control-sm"></textarea>
+                                    <textarea name="description" rows="4" class="form-control form-control-sm">{{ old('description') }}</textarea>
                                 </div>
+                                @error('description')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                <strong>
+                                    {{ $message }}
+                                </strong>
+                            </span>
+                                @enderror
                             </section>
                             <section class="col-12">
                                 <button class="btn btn-primary btn-sm">ثبت</button>

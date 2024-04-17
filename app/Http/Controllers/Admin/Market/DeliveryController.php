@@ -2,25 +2,28 @@
 
 namespace App\Http\Controllers\Admin\Market;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Market\Delivery;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Market\DeliveryRequest;
 
 class DeliveryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function index()
     {
-        return view('admin.market.delivery.index');
+        $delivery_methods = Delivery::all();
+        return view('admin.market.delivery.index', compact('delivery_methods'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -30,56 +33,65 @@ class DeliveryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param DeliveryRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(DeliveryRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $inputs = $request->all();
+        Delivery::create($inputs);
+        return redirect()->route('admin.market.delivery.index')->with('swal-success', 'روش ارسال جدید شما با موفقیت ثبت شد');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Delivery $delivery
+     * @return \Illuminate\Contracts\View\View
      */
-    public function edit($id)
+    public function edit(Delivery $delivery)
     {
-        //
+        return view('admin.market.delivery.edit', compact('delivery'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param DeliveryRequest $request
+     * @param Delivery $delivery
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(DeliveryRequest $request, Delivery $delivery)
     {
-        //
+        $inputs = $request->all();
+        $delivery->update($inputs);
+        return redirect()->route('admin.market.delivery.index')->with('swal-success', 'روش ارسال شما با موفقیت ویرایش شد');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Delivery $delivery
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Delivery $delivery)
     {
-        //
+        $delivery->delete();
+        return redirect()->route('admin.market.delivery.index')->with('swal-success', 'روش ارسال شما با موفقیت حذف شد');
+    }
+
+
+    public function status(Delivery $delivery)
+    {
+        $delivery->status = $delivery->status == 0 ? 1 : 0;
+
+        $result = $delivery->save();
+        if ($result) {
+            if ($delivery->status == 0) {
+                return response()->json(['status' => true, 'checked' => false]);
+            }
+            return response()->json(['status' => true, 'checked' => true]);
+        }
+        return response()->json(['status' => false]);
     }
 }

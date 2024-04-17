@@ -16,12 +16,14 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $unseenComments = Comment::where('seen', 0)->get();
+        $unseenComments = Comment::where('commentable_type','App\Models\Content\Post')->where('seen', 0)->get();
         foreach ($unseenComments as $unseenComment) {
             $unseenComment->seen = 1;
             $unseenComment->save();
         }
-        $comments = Comment::orderBy('created_at', 'desc')->simplePaginate(15);
+        $comments = Comment::orderBy('created_at', 'desc')->where('commentable_type','App\Models\Content\Post')
+            ->simplePaginate(15);
+
         return view('admin.content.comment.index', compact('comments'));
     }
 

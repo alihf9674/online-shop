@@ -42,10 +42,10 @@
                         <tbody>
                         @foreach($sms as $key => $singleSms)
                         <tr>
-                            <th>{{ $key++ }}</th>
-                            <td>{{$singleSms->title}}</td>
+                            <th>{{ $loop->iteration }}</th>
+                            <td>{{ $singleSms->title }}</td>
                             <td>{{ $singleSms->body }}</td>
-                            <td>{{ jalaliDate($singleSms->published_at) }}</td>
+                            <td>{{ jalaliDate($singleSms->published_at, 'H:i:s Y-m-d') }}</td>
                             <td>
                                 <label>
                                     <input id="{{$singleSms->id}}" onchange="changeStatus({{$singleSms->id}})"
@@ -138,7 +138,5 @@
             }
         }
     </script>
-
     @include('admin.alerts.sweetalert.delete-confirm',['className' => 'delete'])
-
 @endsection

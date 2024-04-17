@@ -1,10 +1,9 @@
 <script>
-
     $(document).ready(() => {
         let className = '{{ $className }}'
         let element = $('.' + className);
 
-        element.on('click', (event) => {
+        element.on('click', function(event) {
             event.preventDefault();
 
             const swalWithBootstrapButtons = Swal.mixin({
